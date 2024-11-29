@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance List</title>
+</head>
+<body>
+    <h1>Attendance List</h1>
+    <a href="{% url 'attendance_create' %}">Add New Attendance Record</a>
+    <ul>
+        {% for attendance in attendance_records %}
+            <li>
+                <a href="{% url 'attendance_detail' attendance.attendance_id %}">{{ attendance.student_id.name }} - {{ attendance.date }} - {{ attendance.status }}</a>
+                <a href="{% url 'attendance_update' attendance.attendance_id %}">Edit</a>
+                <a href="{% url 'attendance_delete' attendance.attendance_id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Detail</title>
+</head>
+<body>
+    <h1>Teacher Detail</h1>
+    <p>Name: {{ teacher.name }}</p>
+    <p>Subject: {{ teacher.subject }}</p>
+    <p>Contact Number: {{ teacher.contact_number }}</p>
+    <a href="{% url 'teacher_list' %}">Back to Teacher List</a>
+</body>
+</html>

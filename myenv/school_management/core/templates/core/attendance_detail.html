@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Detail</title>
+</head>
+<body>
+    <h1>Attendance Detail</h1>
+    <p>Student: {{ attendance.student_id.name }}</p>
+    <p>Class: {{ attendance.class_id.name }}</p>
+    <p>Date: {{ attendance.date }}</p>
+    <p>Status: {{ attendance.status }}</p>
+    <a href="{% url 'attendance_list' %}">Back to Attendance List</a>
+</body>
+</html>

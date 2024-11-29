@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Class List</title>
+</head>
+<body>
+    <h1>Class List</h1>
+    <a href="{% url 'class_create' %}">Add New Class</a>
+    <ul>
+        {% for class in classes %}
+            <li>
+                <a href="{% url 'class_detail' class.class_id %}">{{ class.name }}</a>
+                <a href="{% url 'class_update' class.class_id %}">Edit</a>
+                <a href="{% url 'class_delete' class.class_id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

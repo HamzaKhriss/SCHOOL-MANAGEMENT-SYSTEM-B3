@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Form</title>
+</head>
+<body>
+    <h1>{{ form.instance.pk|yesno:"Edit Attendance Record,Add New Attendance Record" }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'attendance_list' %}">Back to Attendance List</a>
+</body>
+</html>

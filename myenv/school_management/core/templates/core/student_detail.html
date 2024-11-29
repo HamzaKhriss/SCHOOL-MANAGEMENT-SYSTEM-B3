@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Detail</title>
+</head>
+<body>
+    <h1>Student Detail</h1>
+    <p>Name: {{ student.name }}</p>
+    <p>Date of Birth: {{ student.dob }}</p>
+    <p>Address: {{ student.address }}</p>
+    <p>Contact Number: {{ student.contact_number }}</p>
+    <p>Class ID: {{ student.class_id.name }}</p>
+    <a href="{% url 'student_list' %}">Back to Student List</a>
+</body>
+</html>

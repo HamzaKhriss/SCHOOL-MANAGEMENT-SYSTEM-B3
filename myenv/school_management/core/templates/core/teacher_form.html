@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Form</title>
+</head>
+<body>
+    <h1>{{ form.instance.pk|yesno:"Edit Teacher,Add New Teacher" }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'teacher_list' %}">Back to Teacher List</a>
+</body>
+</html>

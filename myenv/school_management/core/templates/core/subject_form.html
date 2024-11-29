@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subject Form</title>
+</head>
+<body>
+    <h1>{{ form.instance.pk|yesno:"Edit Subject,Add New Subject" }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'subject_list' %}">Back to Subject List</a>
+</body>
+</html>

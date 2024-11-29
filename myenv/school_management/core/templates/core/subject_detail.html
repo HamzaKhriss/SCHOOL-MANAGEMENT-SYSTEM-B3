@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subject Detail</title>
+</head>
+<body>
+    <h1>Subject Detail</h1>
+    <p>Name: {{ subject.name }}</p>
+    <p>Credits: {{ subject.credits }}</p>
+    <a href="{% url 'subject_list' %}">Back to Subject List</a>
+</body>
+</html>

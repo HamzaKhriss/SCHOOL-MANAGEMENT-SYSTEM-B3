@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Grade</title>
+</head>
+<body>
+    <h1>Are you sure you want to delete this grade for {{ grade.student_id.name }} in {{ grade.subject_id.name }}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <a href="{% url 'grade_list' %}">Cancel</a>
+</body>
+</html>

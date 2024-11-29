@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>School Management System</title>
+</head>
+<body>
+    <h1>Welcome to the School Management System</h1>
+    <a href="{% url 'student_list' %}">Manage Students</a>
+    <a href="{% url 'teacher_list' %}">Manage Teachers</a>
+    <a href="{% url 'class_list' %}">Manage Classes</a>
+    <a href="{% url 'subject_list' %}">Manage Subjects</a>
+    <a href="{% url 'grade_list' %}">Manage Grades</a>
+    <a href="{% url 'attendance_list' %}">Manage Attendance</a>
+    <a href="{% url 'class_attendance' class_id=1 %}">Manage Class Attendance</a> <!-- Example link for class 1 -->
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher List</title>
+</head>
+<body>
+    <h1>Teacher List</h1>
+    <a href="{% url 'teacher_create' %}">Add New Teacher</a>
+    <ul>
+        {% for teacher in teachers %}
+            <li>
+                <a href="{% url 'teacher_detail' teacher.teacher_id %}">{{ teacher.name }}</a>
+                <a href="{% url 'teacher_update' teacher.teacher_id %}">Edit</a>
+                <a href="{% url 'teacher_delete' teacher.teacher_id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

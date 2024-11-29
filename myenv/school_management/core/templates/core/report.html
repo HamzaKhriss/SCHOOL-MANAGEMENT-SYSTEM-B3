@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grade Report</title>
+</head>
+<body>
+    <h1>Grade Report</h1>
+    <table border="1">
+        <tr>
+            <th>Student Name</th>
+            <th>Subject</th>
+            <th>Marks</th>
+        </tr>
+        {% for student_grade in student_grades %}
+            <tr>
+                <td rowspan="{{ student_grade.grades|length }}">{{ student_grade.student.name }}</td>
+                {% for grade in student_grade.grades %}
+                    {% if not forloop.first %}<tr>{% endif %}
+                    <td>{{ grade.subject.name }}</td>
+                    <td>{{ grade.marks }}</td>
+                    </tr>
+                {% endfor %}
+        {% endfor %}
+    </table>
+</body>
+</html>
