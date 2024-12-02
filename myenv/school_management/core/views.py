@@ -1,23 +1,13 @@
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.forms import modelformset_factory
-from .models import Student, Teacher, Class, Subject, Grade, Attendance
-from .forms import StudentForm, TeacherForm, ClassForm, SubjectForm, GradeForm, AttendanceForm
 from django.contrib.auth.models import User, Group
+from django.forms import modelformset_factory  # Add this import
+from .models import Student, Class, Subject, Grade, Attendance, Teacher
+from .forms import StudentForm, ClassForm, SubjectForm, GradeForm, AttendanceForm, TeacherForm
 
-
-
-
-def index(request):
-    return render(request, 'core/index.html')
-
-def student_list(request):
-    students = Student.objects.all()
-    return render(request, 'core/student_list.html', {'students': students})
-
-def student_detail(request, student_id):
-    student = get_object_or_404(Student, pk=student_id)
-    return render(request, 'core/student_detail.html', {'student': student})
-
+# Student Views
+@login_required
+@permission_required('core.add_student', raise_exception=True)
 def student_create(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -28,6 +18,8 @@ def student_create(request):
         form = StudentForm()
     return render(request, 'core/student_form.html', {'form': form})
 
+@login_required
+@permission_required('core.change_student', raise_exception=True)
 def student_update(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
     if request.method == 'POST':
@@ -39,6 +31,8 @@ def student_update(request, student_id):
         form = StudentForm(instance=student)
     return render(request, 'core/student_form.html', {'form': form})
 
+@login_required
+@permission_required('core.delete_student', raise_exception=True)
 def student_delete(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
     if request.method == 'POST':
@@ -46,50 +40,21 @@ def student_delete(request, student_id):
         return redirect('student_list')
     return render(request, 'core/student_confirm_delete.html', {'student': student})
 
-def teacher_list(request):
-    teachers = Teacher.objects.all()
-    return render(request, 'core/teacher_list.html', {'teachers': teachers})
+@login_required
+@permission_required('core.view_student', raise_exception=True)
+def student_list(request):
+    students = Student.objects.all()
+    return render(request, 'core/student_list.html', {'students': students})
 
-def teacher_detail(request, teacher_id):
-    teacher = get_object_or_404(Teacher, pk=teacher_id)
-    return render(request, 'core/teacher_detail.html', {'teacher': teacher})
+@login_required
+@permission_required('core.view_student', raise_exception=True)
+def student_detail(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+    return render(request, 'core/student_detail.html', {'student': student})
 
-def teacher_create(request):
-    if request.method == 'POST':
-        form = TeacherForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('teacher_list')
-    else:
-        form = TeacherForm()
-    return render(request, 'core/teacher_form.html', {'form': form})
-
-def teacher_update(request, teacher_id):
-    teacher = get_object_or_404(Teacher, pk=teacher_id)
-    if request.method == 'POST':
-        form = TeacherForm(request.POST, instance=teacher)
-        if form.is_valid():
-            form.save()
-            return redirect('teacher_list')
-    else:
-        form = TeacherForm(instance=teacher)
-    return render(request, 'core/teacher_form.html', {'form': form})
-
-def teacher_delete(request, teacher_id):
-    teacher = get_object_or_404(Teacher, pk=teacher_id)
-    if request.method == 'POST':
-        teacher.delete()
-        return redirect('teacher_list')
-    return render(request, 'core/teacher_confirm_delete.html', {'teacher': teacher})
-
-def class_list(request):
-    classes = Class.objects.all()
-    return render(request, 'core/class_list.html', {'classes': classes})
-
-def class_detail(request, class_id):
-    class_instance = get_object_or_404(Class, pk=class_id)
-    return render(request, 'core/class_detail.html', {'class': class_instance})
-
+# Class Views
+@login_required
+@permission_required('core.add_class', raise_exception=True)
 def class_create(request):
     if request.method == 'POST':
         form = ClassForm(request.POST)
@@ -100,6 +65,8 @@ def class_create(request):
         form = ClassForm()
     return render(request, 'core/class_form.html', {'form': form})
 
+@login_required
+@permission_required('core.change_class', raise_exception=True)
 def class_update(request, class_id):
     class_instance = get_object_or_404(Class, pk=class_id)
     if request.method == 'POST':
@@ -111,6 +78,8 @@ def class_update(request, class_id):
         form = ClassForm(instance=class_instance)
     return render(request, 'core/class_form.html', {'form': form})
 
+@login_required
+@permission_required('core.delete_class', raise_exception=True)
 def class_delete(request, class_id):
     class_instance = get_object_or_404(Class, pk=class_id)
     if request.method == 'POST':
@@ -118,14 +87,21 @@ def class_delete(request, class_id):
         return redirect('class_list')
     return render(request, 'core/class_confirm_delete.html', {'class': class_instance})
 
-def subject_list(request):
-    subjects = Subject.objects.all()
-    return render(request, 'core/subject_list.html', {'subjects': subjects})
+@login_required
+@permission_required('core.view_class', raise_exception=True)
+def class_list(request):
+    classes = Class.objects.all()
+    return render(request, 'core/class_list.html', {'classes': classes})
 
-def subject_detail(request, subject_id):
-    subject = get_object_or_404(Subject, pk=subject_id)
-    return render(request, 'core/subject_detail.html', {'subject': subject})
+@login_required
+@permission_required('core.view_class', raise_exception=True)
+def class_detail(request, class_id):
+    class_instance = get_object_or_404(Class, pk=class_id)
+    return render(request, 'core/class_detail.html', {'class': class_instance})
 
+# Subject Views
+@login_required
+@permission_required('core.add_subject', raise_exception=True)
 def subject_create(request):
     if request.method == 'POST':
         form = SubjectForm(request.POST)
@@ -136,6 +112,8 @@ def subject_create(request):
         form = SubjectForm()
     return render(request, 'core/subject_form.html', {'form': form})
 
+@login_required
+@permission_required('core.change_subject', raise_exception=True)
 def subject_update(request, subject_id):
     subject = get_object_or_404(Subject, pk=subject_id)
     if request.method == 'POST':
@@ -147,6 +125,8 @@ def subject_update(request, subject_id):
         form = SubjectForm(instance=subject)
     return render(request, 'core/subject_form.html', {'form': form})
 
+@login_required
+@permission_required('core.delete_subject', raise_exception=True)
 def subject_delete(request, subject_id):
     subject = get_object_or_404(Subject, pk=subject_id)
     if request.method == 'POST':
@@ -154,15 +134,33 @@ def subject_delete(request, subject_id):
         return redirect('subject_list')
     return render(request, 'core/subject_confirm_delete.html', {'subject': subject})
 
-# Views for Grade
+@login_required
+@permission_required('core.view_subject', raise_exception=True)
+def subject_list(request):
+    subjects = Subject.objects.all()
+    return render(request, 'core/subject_list.html', {'subjects': subjects})
+
+@login_required
+@permission_required('core.view_subject', raise_exception=True)
+def subject_detail(request, subject_id):
+    subject = get_object_or_404(Subject, pk=subject_id)
+    return render(request, 'core/subject_detail.html', {'subject': subject})
+
+# Grade Views
+@login_required
+@permission_required('core.view_grade', raise_exception=True)
 def grade_list(request):
     grades = Grade.objects.all()
     return render(request, 'core/grade_list.html', {'grades': grades})
 
+@login_required
+@permission_required('core.view_grade', raise_exception=True)
 def grade_detail(request, grade_id):
     grade = get_object_or_404(Grade, pk=grade_id)
     return render(request, 'core/grade_detail.html', {'grade': grade})
 
+@login_required
+@permission_required('core.add_grade', raise_exception=True)
 def grade_create(request):
     if request.method == 'POST':
         form = GradeForm(request.POST)
@@ -173,6 +171,8 @@ def grade_create(request):
         form = GradeForm()
     return render(request, 'core/grade_form.html', {'form': form})
 
+@login_required
+@permission_required('core.change_grade', raise_exception=True)
 def grade_update(request, grade_id):
     grade = get_object_or_404(Grade, pk=grade_id)
     if request.method == 'POST':
@@ -184,60 +184,64 @@ def grade_update(request, grade_id):
         form = GradeForm(instance=grade)
     return render(request, 'core/grade_form.html', {'form': form})
 
+@login_required
+@permission_required('core.delete_grade', raise_exception=True)
 def grade_delete(request, grade_id):
     grade = get_object_or_404(Grade, pk=grade_id)
     if request.method == 'POST':
         grade.delete()
         return redirect('grade_list')
     return render(request, 'core/grade_confirm_delete.html', {'grade': grade})
-def attendance_list(request):
-    attendance_records = Attendance.objects.all()
-    return render(request, 'core/attendance_list.html', {'attendance_records': attendance_records})
 
+# Attendance Views
+@login_required
+@permission_required('core.view_attendance', raise_exception=True)
+def attendance_list(request):
+    attendances = Attendance.objects.all()
+    return render(request, 'core/attendance_list.html', {'attendances': attendances})
+
+@login_required
+@permission_required('core.view_attendance', raise_exception=True)
 def attendance_detail(request, attendance_id):
     attendance = get_object_or_404(Attendance, pk=attendance_id)
     return render(request, 'core/attendance_detail.html', {'attendance': attendance})
 
+@login_required
+@permission_required('core.add_attendance', raise_exception=True)
 def attendance_create(request):
     if request.method == 'POST':
         form = AttendanceForm(request.POST)
         if form.is_valid():
             form.save()
-            update_grades_based_on_attendance()
             return redirect('attendance_list')
     else:
         form = AttendanceForm()
     return render(request, 'core/attendance_form.html', {'form': form})
 
+@login_required
+@permission_required('core.change_attendance', raise_exception=True)
 def attendance_update(request, attendance_id):
     attendance = get_object_or_404(Attendance, pk=attendance_id)
     if request.method == 'POST':
         form = AttendanceForm(request.POST, instance=attendance)
         if form.is_valid():
             form.save()
-            update_grades_based_on_attendance()
             return redirect('attendance_list')
     else:
         form = AttendanceForm(instance=attendance)
     return render(request, 'core/attendance_form.html', {'form': form})
 
+@login_required
+@permission_required('core.delete_attendance', raise_exception=True)
 def attendance_delete(request, attendance_id):
     attendance = get_object_or_404(Attendance, pk=attendance_id)
     if request.method == 'POST':
         attendance.delete()
-        update_grades_based_on_attendance()
         return redirect('attendance_list')
     return render(request, 'core/attendance_confirm_delete.html', {'attendance': attendance})
 
-def update_grades_based_on_attendance():
-    students = Student.objects.all()
-    for student in students:
-        total_absences = Attendance.objects.filter(student_id=student, status='Absent').count()
-        grades = Grade.objects.filter(student_id=student)
-        for grade in grades:
-            grade.marks = max(0, grade.marks - total_absences)
-            grade.save()
-
+@login_required
+@permission_required('core.add_attendance', raise_exception=True)
 def class_attendance(request, class_id):
     class_instance = get_object_or_404(Class, pk=class_id)
     students = Student.objects.filter(class_id=class_instance)
@@ -258,18 +262,61 @@ def class_attendance(request, class_id):
 
     return render(request, 'core/class_attendance.html', {'formset': formset, 'class_instance': class_instance})
 
-from django.shortcuts import render
-from .models import Student, Grade
+# Teacher Views
+@login_required
+@permission_required('core.view_teacher', raise_exception=True)
+def teacher_list(request):
+    teachers = Teacher.objects.all()
+    return render(request, 'core/teacher_list.html', {'teachers': teachers})
 
-def update_grades_based_on_attendance():
-    students = Student.objects.all()
-    for student in students:
-        total_absences = Attendance.objects.filter(student_id=student, status='Absent').count()
-        grades = Grade.objects.filter(student_id=student)
-        for grade in grades:
-            grade.marks = max(0, grade.marks - total_absences)
-            grade.save()
+@login_required
+@permission_required('core.view_teacher', raise_exception=True)
+def teacher_detail(request, teacher_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    return render(request, 'core/teacher_detail.html', {'teacher': teacher})
 
+@login_required
+@permission_required('core.add_teacher', raise_exception=True)
+def teacher_create(request):
+    if request.method == 'POST':
+        form = TeacherForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('teacher_list')
+    else:
+        form = TeacherForm()
+    return render(request, 'core/teacher_form.html', {'form': form})
+
+@login_required
+@permission_required('core.change_teacher', raise_exception=True)
+def teacher_update(request, teacher_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    if request.method == 'POST':
+        form = TeacherForm(request.POST, instance=teacher)
+        if form.is_valid():
+            form.save()
+            return redirect('teacher_list')
+    else:
+        form = TeacherForm(instance=teacher)
+    return render(request, 'core/teacher_form.html', {'form': form})
+
+@login_required
+@permission_required('core.delete_teacher', raise_exception=True)
+def teacher_delete(request, teacher_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    if request.method == 'POST':
+        teacher.delete()
+        return redirect('teacher_list')
+    return render(request, 'core/teacher_confirm_delete.html', {'teacher': teacher})
+
+# Additional Views
+@login_required
+@permission_required('core.view_attendance', raise_exception=True)
+def attendance_report(request):
+    return render(request, 'attendance/report.html')
+
+@login_required
+@permission_required('core.view_grade', raise_exception=True)
 def grade_report(request):
     students = Student.objects.all()
     student_grades = []
@@ -286,15 +333,11 @@ def grade_report(request):
     }
 
     return render(request, 'grades/report.html', context)
-def attendance_report(request):
-    # Your logic here
-    return render(request, 'attendance/report.html')
 
+@login_required
+@permission_required('auth.change_user', raise_exception=True)
 def assign_user_to_group(user_id, group_name):
     user = User.objects.get(id=user_id)
     group = Group.objects.get(name=group_name)
     user.groups.add(group)
     user.save()
-
-# Example usage
-assign_user_to_group(user_id=1, group_name='Admin')
