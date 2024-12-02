@@ -44,7 +44,7 @@ The School Management System is a web application built with Django that allows 
 1. **Clone the repository**:
 
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/wisescream/SCHOOL-MANAGEMENT-SYSTEM-B3/tree/main
    cd school_management
    ```
 
