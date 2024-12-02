@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from .models import Student, Teacher, Class, Subject, Grade, Attendance
 from .forms import StudentForm, TeacherForm, ClassForm, SubjectForm, GradeForm, AttendanceForm
+from django.contrib.auth.models import User, Group
+
 
 
 
@@ -236,7 +238,6 @@ def update_grades_based_on_attendance():
             grade.marks = max(0, grade.marks - total_absences)
             grade.save()
 
-# View for managing attendance for all students in a class
 def class_attendance(request, class_id):
     class_instance = get_object_or_404(Class, pk=class_id)
     students = Student.objects.filter(class_id=class_instance)
@@ -288,3 +289,12 @@ def grade_report(request):
 def attendance_report(request):
     # Your logic here
     return render(request, 'attendance/report.html')
+
+def assign_user_to_group(user_id, group_name):
+    user = User.objects.get(id=user_id)
+    group = Group.objects.get(name=group_name)
+    user.groups.add(group)
+    user.save()
+
+# Example usage
+assign_user_to_group(user_id=1, group_name='Admin')
