@@ -1,18 +1,10 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User, Group
-from django.forms import modelformset_factory  # Add this import
+from django.forms import modelformset_factory
 from .models import Student, Class, Subject, Grade, Attendance, Teacher
 from .forms import StudentForm, ClassForm, SubjectForm, GradeForm, AttendanceForm, TeacherForm
-from django.shortcuts import render
-from django.contrib.auth import logout
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, Group
-from django.contrib.auth import logout
-from .models import Grade, Student
-from .models import Subject
-from .forms import SubjectForm
+
 
 @login_required
 def index(request):
@@ -22,6 +14,7 @@ def index(request):
         'is_teacher': is_teacher,
         'is_student': is_student,
     })
+
 # Student Views
 @login_required
 @permission_required('core.add_student', raise_exception=True)
@@ -118,6 +111,12 @@ def class_detail(request, class_id):
 
 # Subject Views
 @login_required
+@permission_required('core.view_subject', raise_exception=True)
+def subject_list(request):
+    subjects = Subject.objects.all()
+    return render(request, 'core/subject_list.html', {'subjects': subjects})
+
+@login_required
 @permission_required('core.add_subject', raise_exception=True)
 def subject_create(request):
     if request.method == 'POST':
@@ -151,10 +150,6 @@ def subject_delete(request, subject_id):
         return redirect('subject_list')
     return render(request, 'core/subject_confirm_delete.html', {'subject': subject})
 
-def subject_list(request):
-    subjects = Subject.objects.all()
-    return render(request, 'core/subject_list.html', {'subjects': subjects})
-
 @login_required
 @permission_required('core.view_subject', raise_exception=True)
 def subject_detail(request, subject_id):
@@ -164,25 +159,10 @@ def subject_detail(request, subject_id):
 # Grade Views
 @login_required
 def grade_list(request):
-    # Get the Student instance associated with the logged-in user
     student = get_object_or_404(Student, user=request.user)
-    # Filter grades based on the Student instance
     grades = Grade.objects.filter(student_id=student)
     return render(request, 'core/grade_list.html', {'grades': grades})
 
-@login_required
-@permission_required('auth.change_user', raise_exception=True)
-def assign_user_to_group(request, user_id, group_name):
-    user = User.objects.get(id=user_id)
-    group = Group.objects.get(name=group_name)
-    user.groups.add(group)
-    user.save()
-    return redirect('index')
-
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect('login')
 @login_required
 @permission_required('core.view_grade', raise_exception=True)
 def grade_detail(request, grade_id):
@@ -366,13 +346,14 @@ def grade_report(request):
 
 @login_required
 @permission_required('auth.change_user', raise_exception=True)
-def assign_user_to_group(user_id, group_name):
+def assign_user_to_group(request, user_id, group_name):
     user = User.objects.get(id=user_id)
     group = Group.objects.get(name=group_name)
     user.groups.add(group)
     user.save()
+    return redirect('index')
 
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('index')
+    return redirect('login')

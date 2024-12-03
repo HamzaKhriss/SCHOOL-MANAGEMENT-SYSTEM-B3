@@ -26,13 +26,11 @@ urlpatterns = [
     path('classes/<int:class_id>/edit/', views.class_update, name='class_update'),
     path('classes/<int:class_id>/delete/', views.class_delete, name='class_delete'),
 
-    # URLs for Subject
     path('subjects/', views.subject_list, name='subject_list'),
     path('subjects/create/', views.subject_create, name='subject_create'),
     path('subjects/<int:subject_id>/', views.subject_detail, name='subject_detail'),
     path('subjects/<int:subject_id>/edit/', views.subject_update, name='subject_update'),
     path('subjects/<int:subject_id>/delete/', views.subject_delete, name='subject_delete'),
-
 
     path('grades/', views.grade_list, name='grade_list'),
     path('assign_user_to_group/<int:user_id>/<str:group_name>/', views.assign_user_to_group, name='assign_user_to_group'),
