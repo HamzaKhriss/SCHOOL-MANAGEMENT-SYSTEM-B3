@@ -4,16 +4,15 @@
     <title>Grade List</title>
 </head>
 <body>
-    <h1>Grade List</h1>
-    <a href="{% url 'grade_create' %}">Add New Grade</a>
+    <h1>Your Grades</h1>
     <ul>
         {% for grade in grades %}
-            <li>
-                <a href="{% url 'grade_detail' grade.grade_id %}">{{ grade.student_id.name }} - {{ grade.subject_id.name }}</a>
-                <a href="{% url 'grade_update' grade.grade_id %}">Edit</a>
-                <a href="{% url 'grade_delete' grade.grade_id %}">Delete</a>
-            </li>
+            <li>{{ grade.subject_id.name }}: {{ grade.marks }}</li>
         {% endfor %}
     </ul>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>

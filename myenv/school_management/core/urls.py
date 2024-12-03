@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from django.contrib import admin
+from django.urls import include, path
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -25,13 +28,15 @@ urlpatterns = [
 
     # URLs for Subject
     path('subjects/', views.subject_list, name='subject_list'),
-    path('subjects/<int:subject_id>/', views.subject_detail, name='subject_detail'),
     path('subjects/create/', views.subject_create, name='subject_create'),
+    path('subjects/<int:subject_id>/', views.subject_detail, name='subject_detail'),
     path('subjects/<int:subject_id>/edit/', views.subject_update, name='subject_update'),
     path('subjects/<int:subject_id>/delete/', views.subject_delete, name='subject_delete'),
 
-    # URLs for Grade
+
     path('grades/', views.grade_list, name='grade_list'),
+    path('assign_user_to_group/<int:user_id>/<str:group_name>/', views.assign_user_to_group, name='assign_user_to_group'),
+    path('logout/', views.logout_view, name='logout'),
     path('grades/<int:grade_id>/', views.grade_detail, name='grade_detail'),
     path('grades/create/', views.grade_create, name='grade_create'),
     path('grades/<int:grade_id>/edit/', views.grade_update, name='grade_update'),
@@ -46,4 +51,7 @@ urlpatterns = [
     path('attendance/<int:attendance_id>/delete/', views.attendance_delete, name='attendance_delete'),
     path('attendance/class/<int:class_id>/', views.class_attendance, name='class_attendance'),
     path('attendance/report/', views.attendance_report, name='attendance_report'),
+
+    path('admin/', admin.site.urls),
+
 ]

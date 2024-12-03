@@ -5,12 +5,23 @@
 </head>
 <body>
     <h1>Welcome to the School Management System</h1>
-    <a href="{% url 'student_list' %}">Manage Students</a>
-    <a href="{% url 'teacher_list' %}">Manage Teachers</a>
-    <a href="{% url 'class_list' %}">Manage Classes</a>
-    <a href="{% url 'subject_list' %}">Manage Subjects</a>
-    <a href="{% url 'grade_list' %}">Manage Grades</a>
-    <a href="{% url 'attendance_list' %}">Manage Attendance</a>
-    <a href="{% url 'class_attendance' class_id=1 %}">Manage Class Attendance</a> <!-- Example link for class 1 -->
+    {% if user.is_authenticated %}
+        {% if is_teacher %}
+            <a href="{% url 'class_list' %}">Manage Classes</a>
+            <a href="{% url 'subject_list' %}">Manage Subjects</a>
+            <a href="{% url 'class_attendance' class_id=1 %}">Manage Class Attendance</a>
+        {% elif is_student %}
+            <a href="{% url 'attendance_list' %}">View Attendance</a>
+            <a href="{% url 'class_list' %}">View Classes</a>
+            <a href="{% url 'subject_list' %}">View Subjects</a>
+            <a href="{% url 'grade_list' %}">View Grades</a>
+        {% endif %}
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+    {% endif %}
 </body>
 </html>

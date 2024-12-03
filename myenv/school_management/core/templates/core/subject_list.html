@@ -7,13 +7,11 @@
     <h1>Subject List</h1>
     <a href="{% url 'subject_create' %}">Add New Subject</a>
     <ul>
-        {% for subject in subjects %}
-            <li>
-                <a href="{% url 'subject_detail' subject.subject_id %}">{{ subject.name }}</a>
-                <a href="{% url 'subject_update' subject.subject_id %}">Edit</a>
-                <a href="{% url 'subject_delete' subject.subject_id %}">Delete</a>
-            </li>
-        {% endfor %}
+        <li>
+            <a href="{% url 'subject_detail' subjects.1.subject_id %}">{{ subjects.1.name }}</a>
+            <a href="{% url 'subject_update' subjects.1.subject_id %}">Edit</a>
+            <a href="{% url 'subject_delete' subjects.1.subject_id %}">Delete</a>
+        </li>
     </ul>
 </body>
 </html>
