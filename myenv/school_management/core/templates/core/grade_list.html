@@ -4,15 +4,34 @@
     <title>Grade List</title>
 </head>
 <body>
-    <h1>Your Grades</h1>
-    <ul>
-        {% for grade in grades %}
-            <li>{{ grade.subject_id.name }}: {{ grade.marks }}</li>
-        {% endfor %}
-    </ul>
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
+    <h1>Grade List</h1>
+    <a href="{% url 'grade_create' %}" class="btn btn-success mb-3">Add New Grade</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Marks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grade in grades %}
+            <tr>
+                <td>{{ grade.student_id.name }}</td>
+                <td>{{ grade.subject_id.name }}</td>
+                <td>{{ grade.marks }}</td>
+                <td>
+                    <a href="{% url 'grade_update' grade.grade_id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'grade_delete' grade.grade_id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No grades found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

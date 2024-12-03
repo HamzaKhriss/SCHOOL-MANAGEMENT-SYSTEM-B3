@@ -5,6 +5,43 @@ from django.forms import modelformset_factory
 from .models import Student, Class, Subject, Grade, Attendance, Teacher
 from .forms import StudentForm, ClassForm, SubjectForm, GradeForm, AttendanceForm, TeacherForm
 
+@login_required
+@permission_required('auth.view_group', raise_exception=True)
+def role_list(request):
+    roles = Group.objects.all()
+    return render(request, 'core/role_list.html', {'roles': roles})
+
+@login_required
+@permission_required('auth.view_group', raise_exception=True)
+def role_detail(request, group_id):
+    role = get_object_or_404(Group, pk=group_id)
+    users = role.user_set.all()
+    return render(request, 'core/role_detail.html', {'role': role, 'users': users})
+
+@login_required
+@permission_required('auth.change_group', raise_exception=True)
+def role_assign(request, group_id):
+    role = get_object_or_404(Group, pk=group_id)
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        user = get_object_or_404(User, pk=user_id)
+        user.groups.add(role)
+        return redirect('role_detail', group_id=group_id)
+    users = User.objects.exclude(groups__id=group_id)
+    return render(request, 'core/role_assign.html', {'role': role, 'users': users})
+
+@login_required
+@permission_required('auth.view_user', raise_exception=True)
+def dashboard(request):
+    stats = {
+        'students': Student.objects.count(),
+        'teachers': Teacher.objects.count(),
+        'classes': Class.objects.count(),
+        'subjects': Subject.objects.count(),
+        'grades': Grade.objects.count(),
+        'attendance_records': Attendance.objects.count(),
+    }
+    return render(request, 'core/dashboard.html', {'stats': stats})
 
 @login_required
 def index(request):
@@ -327,22 +364,9 @@ def attendance_report(request):
 
 @login_required
 @permission_required('core.view_grade', raise_exception=True)
-def grade_report(request):
-    students = Student.objects.all()
-    student_grades = []
-
-    for student in students:
-        grades = Grade.objects.filter(student_id=student)
-        student_grades.append({
-            'student': student,
-            'grades': grades
-        })
-
-    context = {
-        'student_grades': student_grades
-    }
-
-    return render(request, 'grades/report.html', context)
+def grade_list(request):
+    grades = Grade.objects.all()  # Fetch all grades
+    return render(request, 'core/grade_list.html', {'grades': grades})
 
 @login_required
 @permission_required('auth.change_user', raise_exception=True)

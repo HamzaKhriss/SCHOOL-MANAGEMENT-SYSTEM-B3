@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'school_management_db',  # Replace with your database name
         'USER': 'root',       # Replace with your MySQL user
-        'PASSWORD': 'root',  # Replace with your MySQL password
+        'PASSWORD': '1234',  # Replace with your MySQL password
         'HOST': 'localhost',             # Set to your database host
         'PORT': '3306',                  # Set to your database port
     }

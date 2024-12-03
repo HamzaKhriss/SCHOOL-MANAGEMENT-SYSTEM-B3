@@ -39,7 +39,7 @@ urlpatterns = [
     path('grades/create/', views.grade_create, name='grade_create'),
     path('grades/<int:grade_id>/edit/', views.grade_update, name='grade_update'),
     path('grades/<int:grade_id>/delete/', views.grade_delete, name='grade_delete'),
-    path('grades/report/', views.grade_report, name='grade_report'),
+    
 
     # URLs for Attendance
     path('attendance/', views.attendance_list, name='attendance_list'),
@@ -52,4 +52,8 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('roles/', views.role_list, name='role_list'),
+    path('roles/<int:group_id>/', views.role_detail, name='role_detail'),
+    path('roles/<int:group_id>/assign/', views.role_assign, name='role_assign'),
 ]
